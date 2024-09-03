@@ -1,13 +1,11 @@
 import express from 'express';
-import { ProductManager } from '../Mongo/Managers/productManager.js';
-import { ProductModel } from '../Mongo/Models/Product.model.js';
+import { ProductModel } from '../Mongo/Models/product.model.js';
+import { ProductsDao } from '../DAO/products.dao.js';
 
 const productsRouter = express.Router()
-const productManager = new ProductManager()
-
 //------------ GET ------------
 
-productsRouter.get("/api/products",async (req,res) => {
+productsRouter.get("/",async (req,res) => {
 
     let {page,limit} = req.query
 
@@ -27,29 +25,31 @@ productsRouter.get("/api/products",async (req,res) => {
     )
 
     
-productsRouter.get('/api/products/:pid', async (req, res) => {
+productsRouter.get('/:pid', async (req, res) => {
 
     try {
 
         let pid = req.params.pid
-        let productSelectedById = await productManager.getProductByIdAsync(pid);
+        let productSelectedById = await ProductsDao.getProductByIdAsync(pid);
         
         if (!productSelectedById) {
             return res.status(404).json({ error: "Producto no encontrado" });
         }
 
         res.json(productSelectedById);
+
     } catch (error) {
+
         console.error("Error al obtener producto por ID:", error);
         res.status(404).json({ error: "Producto no encontrado" });
     }
 });
 
 
-productsRouter.get('/products/:pid',async (req,res) => {
+productsRouter.get('/:pid',async (req,res) => {
     try {
         const pid = req.params.pid;
-        const product = await productManager.getProductByIdAsync(pid);
+        const product = await ProductsDao.getProductByIdAsync(pid);
 
         if (!product) {
             return res.status(404).render('notFound', { message: "Producto no encontrado" });
@@ -64,10 +64,10 @@ productsRouter.get('/products/:pid',async (req,res) => {
 })
 
 //------------ POST ------------
-productsRouter.post('/api/products',async (req,res)=> {
+productsRouter.post('/',async (req,res)=> {
     try {
         let newProduct = req.body;
-        const isAdded = await productManager.addProductAsync(newProduct);
+        const isAdded = await ProductsDao.addProductAsync(newProduct);
         if(isAdded){
             res.status(400).send({ status: "success", message: "producto agregado" });
         }
@@ -82,12 +82,12 @@ productsRouter.post('/api/products',async (req,res)=> {
 })
 
 //------------ PUT ------------
-productsRouter.put('/api/products/:pid', async (req, res) => {
+productsRouter.put('/:pid', async (req, res) => {
     try {
         let pid = req.params.pid;
         let productToUpdate = req.body;
 
-        const isUpdated = await productManager.updateProductAsync(pid, productToUpdate);
+        const isUpdated = await ProductsDao.updateProductAsync(pid, productToUpdate);
         if(isUpdated){
             res.send({ status: "success", message: "Producto actualizado" });
         }
@@ -101,11 +101,11 @@ productsRouter.put('/api/products/:pid', async (req, res) => {
 });
 
 //------------ DELETE ------------
-productsRouter.delete('/api/products/:pid', async (req, res) => {
+productsRouter.delete('/:pid', async (req, res) => {
     try {
         let pid = req.params.pid;
 
-        const isDeleted = await productManager.deleteProductAsync(pid);
+        const isDeleted = await ProductsDao.deleteProductAsync(pid);
         if(isDeleted){
             res.send({ status: "success", message: "Producto eliminado" });
         }

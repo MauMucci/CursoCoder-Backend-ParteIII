@@ -3,7 +3,7 @@ import { generateToken } from "../utils/jwtFunctions.js";
 
 class AuthController {
 
-  async login(req, res)
+  static async login(req, res)
   {
     const payload = {
       email: req.user.email,
@@ -21,13 +21,13 @@ class AuthController {
   }
 
 
-  async loginError(req, res) {
+  static async loginError(req, res) {
     res.status(401).json({ message: "Usuario o contraseña incorrecto" });
     
   }
 
 
-  async register(req, res) {
+  static async register(req, res) {
     const { first_name, last_name, email, age, password, role } = req.body;
 
     if (!first_name || !last_name || !email || !age || !password) {
@@ -67,7 +67,7 @@ class AuthController {
   }
 
 
-  async profile(req, res) {
+  static async profile(req, res) {
     console.log(req.user);
     console.log("estamos en profile 2");
 
@@ -79,7 +79,7 @@ class AuthController {
   }
 
 
-  async logout(req, res) {
+  static async logout(req, res) {
     res.clearCookie("token")
     res.redirect('/');
 

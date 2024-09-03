@@ -1,14 +1,10 @@
 import express from 'express';
 import path from 'path';
 import __dirname from './utils.js';
-import {productsRouter} from './routes/products.router.js';
-import {cartsRouter} from './routes/carts.router.js'
-import viewsRouter from './routes/views.router.js';
 import { Server } from 'socket.io';
+import indexRouter from './routes/index.js'
 import mongoose from 'mongoose';
 import handlebars from 'express-handlebars';
-import { ProductManager } from './Mongo/Managers/productManager.js';
-import authRouter from './routes/auth.routes.js';
 import passport from 'passport';
 import { initializePassport } from './config/passport.config.js';
 import { config } from './config/config.js';
@@ -20,7 +16,6 @@ const PORT = 5000;
 const httpServer = app.listen(PORT, ()=>console.log(`Servidor escuchando desde puerto  ${PORT}`))
 
 const io = new Server(httpServer)
-const pm = new ProductManager()
 
 
 //Middlewares
@@ -35,10 +30,7 @@ initializePassport()
 app.use(passport.initialize())
 
 //Routes
-app.use('/',productsRouter)
-app.use('/',cartsRouter)
-app.use('/',viewsRouter)
-app.use('/api/auth',authRouter)
+app.use("/api", indexRouter);
 
 app.use("*", (req, res) => {
     res.status(404).json({
