@@ -14,7 +14,7 @@ cartsRouter.get('/:cid',CartController.getCartByIdAsync)
 cartsRouter.post('/',CartController.addCartAsync)
 
 //Para agregar productos a un carrito 
-cartsRouter.post('/:cid/product/:pid',CartController.addProductToCartAsync())
+cartsRouter.post('/:cid/product/:pid',CartController.addProductToCartAsync)
            
 
 
@@ -28,10 +28,12 @@ cartsRouter.delete('/:cid',CartController.deleteAllProductsFromCartAsync)
 
 //------------ PUT ------------
 //Para reemplazar un producto del carrito
-cartsRouter.put('/:cid',CartController.updateCartProductsAsync)
+cartsRouter.put('/:cid',CartController.updateCartProductAsync)
 
 //Para modificar la cntidad de un producto
-cartsRouter.put('/:cid/products/:pid',CartController.updateProductQuantityAsync)
+//cartsRouter.put('/:cid/products/:pid',CartController.updateProductQuantityAsync)
+
+cartsRouter.post('/:cid/purchase',CartController.purchaseCartAsync)
 
 
 export {cartsRouter}

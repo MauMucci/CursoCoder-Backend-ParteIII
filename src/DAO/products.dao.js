@@ -2,7 +2,7 @@ import { ProductModel } from "../Mongo/Models/product.model.js";
 
 export class ProductsDao {
 
-    static getProductsAsync = async () => {
+    static getAllProductsAsync = async () => {
         return await ProductModel.find()
     }
 

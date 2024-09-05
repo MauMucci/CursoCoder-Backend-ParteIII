@@ -1,7 +1,7 @@
-import { userModel } from "../Mongo/Models/user.model.js";
 import { generateToken } from "../utils/jwtFunctions.js";
+import { userModel } from "../Mongo/Models/user.model.js";
 
-class AuthController {
+export class AuthController {
 
   static async login(req, res)
   {
@@ -87,4 +87,4 @@ class AuthController {
   }
 }
 
-export default new AuthController();
+

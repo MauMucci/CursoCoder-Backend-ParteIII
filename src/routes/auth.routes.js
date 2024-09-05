@@ -1,19 +1,17 @@
 import { Router } from "express";
-import authController from "../controller/auth.controller.js";
+import { AuthController } from "../controller/auth.controller.js";
 import passport from "passport";
 
 const authRouter = Router();
 
-authRouter.post("/login", 
-  passport.authenticate("login",{session: false,failureRedirect: "/api/auth/login-error"}),
-  authController.login);
+authRouter.post("/login", passport.authenticate("login"),AuthController.login);
 
-authRouter.get("/login-error", authController.loginError);
+authRouter.get("/login-error", AuthController.loginError);
 
-authRouter.post("/register", authController.register);
+authRouter.post("/register", AuthController.register);
 
-authRouter.get("/profile", passport.authenticate("jwt", { session: false }),authController.profile);
+authRouter.get("/profile", passport.authenticate("jwt"),AuthController.profile);
 
-authRouter.get("/logout", authController.logout);
+authRouter.get("/logout", AuthController.logout);
 
 export default authRouter;

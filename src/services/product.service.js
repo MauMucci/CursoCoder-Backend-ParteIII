@@ -1,11 +1,11 @@
 import { ProductsDao } from "../DAO/products.dao.js";
 
 export class ProductService {
-    static async getProductsAsync() {
+    static async getAllProductsAsync() {
         return await ProductsDao.getProductsAsync()
     }
 
-    static async getProductsByIdAsync(id) {
+    static async getProductByIdAsync(id) {
         return await ProductsDao.getProductByIdAsync(id)
     }
 

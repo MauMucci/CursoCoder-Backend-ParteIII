@@ -2,15 +2,20 @@ import { userModel } from "../Mongo/Models/user.model.js";
 
 export class UserDao {
     
-    static async getAll(){
+    static async getAllUsersAsync(){
         return await userModel.find()
     }
 
-    static async getById(id){
-        return await userModel.getById(id)
+    static async getUserByEmailAsync(email){
+        return await userModel.findOne(email)
+    }
+
+    static async addUserAsync(user){
+        return await userModel.save(user)
     }
     
-    static async createUser(user) {
-        return await userModel.create(user)
+    
+    static async deleteUserAsync(uid){
+        return await userModel.deleteOne(uid)
     }
 }
