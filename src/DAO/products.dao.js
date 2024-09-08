@@ -10,13 +10,13 @@ export class ProductsDao {
         return await ProductModel.findById(pid)
     }
 
-    static addProductAsync = async ({title,description,thumbnail,code,stock,price,status}) => {
-        if (!title || !description || !price || !thumbnail || !code || !stock) {
+    static addProductAsync = async ({title,description,thumbnail,code,stock,price,status,category}) => {
+        if (!title || !description || !price || !thumbnail || !code || !stock ||!category) {
             console.log("DATOS INCOMPLETOS PARA AGREGAR EL PRODUCTO")            
             return null
         }
 
-        return await ProductModel.create({title,description,thumbnail,code,stock,price,status})
+        return await ProductModel.create({title,description,thumbnail,code,stock,price,status,category})
     }
 
     static updateProductAsync = async (pid, productToReplace) => {
@@ -31,4 +31,28 @@ export class ProductsDao {
     static deleteProductAsync = async (pid) => {
         return await ProductModel.deleteOne({_id: pid})
     }
+
+    static async discountStockAsync(pid, quantity) {
+        try {
+            const product = await ProductModel.findById(pid);
+
+            if (!product) {
+                throw new Error("Producto no encontrado");
+            }
+
+            if (product.stock < quantity) {
+                throw new Error("No hay suficiente stock disponible para este producto");
+            }
+
+            product.stock -= quantity;
+
+            await product.save();
+
+            return product;
+        } catch (error) {
+            console.error(`Error al descontar stock del producto: ${error.message}`);
+            throw new Error(`Error al descontar stock del producto: ${error.message}`);
+        }
+    }
+
 }

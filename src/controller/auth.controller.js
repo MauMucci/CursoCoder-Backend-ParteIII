@@ -3,12 +3,14 @@ import { userModel } from "../Mongo/Models/user.model.js";
 
 export class AuthController {
 
-  static async login(req, res)
-  {
-    const payload = {
-      email: req.user.email,
-      role: req.user.role,
-    };
+  static async login(req, res){
+
+    try {
+    
+      const payload = {
+        email: req.user.email,
+        role: req.user.role,
+      };
     
     const token = generateToken(payload);
 
@@ -17,8 +19,18 @@ export class AuthController {
       httpOnly: true, 
     });
 
-    res.redirect('/home')
+    res.status(200).json({
+      message: "Sesión iniciada",
+      token,
+      
+    });
   }
+  catch (error) {
+
+    res.status(500).json({error: "Error al iniciar sesion",details:error.message})
+    
+  }
+}
 
 
   static async loginError(req, res) {
@@ -56,7 +68,7 @@ export class AuthController {
 
       await user.save();
 
-      res.redirect('/home') 
+      res.json({message:`Usuario registrado correctamente`,user}) 
       console.log("Usuario creado ",user)
     } catch (error) {
       res.status(500).json({

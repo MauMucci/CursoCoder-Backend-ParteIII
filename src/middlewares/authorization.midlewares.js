@@ -14,7 +14,7 @@ export function authorizations(roles) {
 
 export function authenticate(strategy) {
   return async (req, res, next) => {
-    passport.authenticate(strategy, { session: false },async (error, user, info) => {
+    passport.authenticate(strategy, { session: false }, async (error, user, info) => {
 
         if (error) return next(error);
 
@@ -26,8 +26,9 @@ export function authenticate(strategy) {
           });
 
         req.user = user;
+        console.log("usuario desde authorization midleware: ",req.user._id)
         next();
       }
     )(req, res, next);
-  };
+  };  
 }

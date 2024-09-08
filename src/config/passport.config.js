@@ -21,6 +21,8 @@ function initializePassport() {
             return done(null, false, { message: "Usuario no encontrado" });
           }
 
+          console.log(`usuario encontrado: ${user._id}`)
+
           const isPasswordCorrect = await verifyPassword(password,user.password);
 
           if (!isPasswordCorrect) {
@@ -39,12 +41,10 @@ function initializePassport() {
 
   
   // JWT Strategy
-  passport.use("jwt",new JWTStrategy({
-        jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
-        secretOrKey: config.JWT_SECRET,
-      },
+  passport.use("jwt",new JWTStrategy({jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),secretOrKey: config.JWT_SECRET,},
+  
       async (payload, done) => {
-        console.log("Payload JWT:", payload); // Añade este log
+        console.log("Payload JWT:", payload); 
         try {
           done(null, payload);
         } catch (error) {
@@ -55,21 +55,6 @@ function initializePassport() {
   );
 }
 
-  passport.serializeUser((user, done) => {
-    done(null, user._id);
-  });
-
-  passport.deserializeUser(async (id, done) => {
-    try {
-      const user = await userModel.findById(id);
-
-      return done(null, user);
-    } catch (error) {
-      return done(`Hubo un error: ${error.message}`);
-    }
-  });
-
-
 function cookieExtractor(req) {
   let token = null;
 
@@ -77,7 +62,7 @@ function cookieExtractor(req) {
     token = req.cookies["token"];
   }
 
-  console.log("cookieExtractor", token); //agregado
+  console.log("cookieExtractor", token); 
   return token;
 }
 

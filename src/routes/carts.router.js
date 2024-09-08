@@ -1,39 +1,24 @@
 import express from 'express';
 import { CartController } from '../controller/cart.controller.js';
+import { cartDto } from '../DTO/cart.dto.js';
+import { validateDTO } from '../middlewares/validateDTO.midleware.js';
 
 const cartsRouter = express.Router();
 
-//------------ GET ------------
 cartsRouter.get("/",CartController.getAllCartsAsync)
-
 cartsRouter.get('/:cid',CartController.getCartByIdAsync)
 
 
-//------------ POST ------------
-//PARA CREAR UN CARRITO SIN PRODUCTOS
-cartsRouter.post('/',CartController.addCartAsync)
+cartsRouter.post('/',validateDTO(cartDto),CartController.addCartAsync)
+cartsRouter.post('/:cid/products/:pid',validateDTO(cartDto),CartController.addProductToCartAsync)
+cartsRouter.post('/:cid/purchase',validateDTO(cartDto),CartController.purchaseAsync)
 
-//Para agregar productos a un carrito 
-cartsRouter.post('/:cid/product/:pid',CartController.addProductToCartAsync)
-           
-
-
-//------------ DELETE ------------
-//Para borrar un producto del carrito
+        
 cartsRouter.delete('/:cid/products/:pid',CartController.deleteProductFromCartAsync)
-
-//Para borrar todos los productos del carrito
 cartsRouter.delete('/:cid',CartController.deleteAllProductsFromCartAsync)
 
 
-//------------ PUT ------------
-//Para reemplazar un producto del carrito
 cartsRouter.put('/:cid',CartController.updateCartProductAsync)
-
-//Para modificar la cntidad de un producto
-//cartsRouter.put('/:cid/products/:pid',CartController.updateProductQuantityAsync)
-
-cartsRouter.post('/:cid/purchase',CartController.purchaseCartAsync)
 
 
 export {cartsRouter}

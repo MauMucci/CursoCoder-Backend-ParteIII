@@ -9,6 +9,8 @@ import passport from 'passport';
 import { initializePassport } from './config/passport.config.js';
 import { config } from './config/config.js';
 import cookieParser from 'cookie-parser';
+import viewsRouter from './routes/views.router.js';
+import session from 'express-session';
 
 const app = express()   
 const PORT = 5000;
@@ -25,12 +27,14 @@ app.use(express.static(path.join(__dirname,'public')))
 
 app.use(cookieParser());
 
+
 //Configuracion de passport
 initializePassport()
 app.use(passport.initialize())
 
 //Routes
 app.use("/api", indexRouter);
+app.use('/',viewsRouter)
 
 app.use("*", (req, res) => {
     res.status(404).json({

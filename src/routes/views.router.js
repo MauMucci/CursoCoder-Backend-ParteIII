@@ -1,5 +1,5 @@
 import express from 'express';
-import { ProductModel } from '../Mongo/Models/Product.model.js';
+import { ProductModel } from '../Mongo/Models/product.model.js';
 import passport from 'passport';
 
 
@@ -23,7 +23,7 @@ viewsRouter.get('/home',passport.authenticate('jwt',{session:false}), async (req
 viewsRouter.get('/realTimeProducts',(req,res) => {
      res.render('realTimeProducts',{})
 })
-
+  
 
 viewsRouter.get("/", (req,res) => {
      res.render("index",{title:"Inicio"})
@@ -43,8 +43,6 @@ viewsRouter.get("/profile", (req, res) => {
      console.log("Estamos en Profile 1")
      res.render("profile",{title:"Profile"})
    });
-
-
 
 
 export default viewsRouter

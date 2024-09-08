@@ -1,20 +1,20 @@
 import express from 'express';
 import { ProductController } from '../controller/product.controller.js';
+import { authenticate } from '../middlewares/authorization.midlewares.js';
+import { authorizations } from '../middlewares/authorization.midlewares.js';
+import { productDto } from '../DTO/products.js';
+import { validateDTO } from '../middlewares/validateDTO.midleware.js'; 
 
 const productsRouter = express.Router()
 
 
-//------------ GET ------------
 productsRouter.get('/',ProductController.getAllProductsAsync)
 productsRouter.get(':pid',ProductController.getProductByIdAsync)
 
-//------------ POST ------------
-productsRouter.post('/',ProductController.addProductAsync)
+productsRouter.post('/',validateDTO(productDto),authenticate("jwt"),authorizations(["admin"]),ProductController.addProductAsync)
 
-//------------ PUT ------------
-productsRouter.put('/:pid',ProductController.updateProductAsync)
+productsRouter.put('/:pid',validateDTO(productDto),authenticate("jwt"),authorizations(["admin"]),ProductController.updateProductAsync)
 
-//------------ DELETE ------------
-productsRouter.delete('/:pid',ProductController.deleteProductAsync)
+productsRouter.delete('/:pid',validateDTO(productDto),authenticate("jwt"),authorizations(["admin"]),ProductController.deleteProductAsync)
 
 export { productsRouter };

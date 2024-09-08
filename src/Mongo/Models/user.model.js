@@ -13,7 +13,14 @@ const userSchema = new Schema({
         required: true,
         enum: ["admin","user"],
         default:"user"
-    }
+    },
+    carts: {
+      type: [
+        {
+          cart: { type: Schema.Types.ObjectId, ref: "cart" },
+        },
+      ],
+    },
 })
 
 userSchema.pre("save", function (next) {

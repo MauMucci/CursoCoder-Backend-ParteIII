@@ -31,8 +31,8 @@ export class ProductController {
     static async addProductAsync (req,res){
         try {
             
-            const { title, description,thumbnail ,code, stock, price } = req.body;            
-            const product = await ProductService.addProductAsync({title,description,thumbnail,code,stock,price})
+            const { title, description,thumbnail ,code, stock, price,category } = req.body;            
+            const product = await ProductService.addProductAsync({title,description,thumbnail,code,stock,price,category})
 
             res.status(201).json(product);
 

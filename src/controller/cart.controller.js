@@ -37,7 +37,6 @@ export class CartController {
             }
 
             res.json(cart)
-
             
         } catch (error) {
             res.status(500).json({error:"Error al obtener el carrito",details: error.message})
@@ -46,16 +45,28 @@ export class CartController {
 
     }
 
-    static async addCartAsync(req,res){
+    static async addCartAsync(req, res) {
         try {
-            
-            const cart = await CartService.addCartAsync()
-            res.status(201).json({status: 'success',message: 'Carrito creado exitosamente',data: cart})
-            
+            const { products } = req.body;
+
+            if (!products) {
+                return res.status(400).json({ error: "Faltan los productos en la solicitud" });
+            }
+
+            const newCart = await CartService.addCartAsync(products);
+
+            res.status(201).json({
+                status: 'success',
+                message: 'Carrito creado exitosamente',
+                data: newCart,
+            });
         } catch (error) {
             console.error('Error al crear el carrito:', error);
-            res.status(500).json({status: 'error',message: 'No se pudo crear el carrito',error: error.message})
-            
+            res.status(500).json({
+                status: 'error',
+                message: 'No se pudo crear el carrito',
+                error: error.message,
+            });
         }
     }
 
@@ -63,12 +74,10 @@ export class CartController {
         try {
             const { cid, pid } = req.params;
 
-            // Verifica que los parámetros cid y pid sean válidos
             if (!cid || !pid) {
                 return res.status(400).json({ error: "Parámetros inválidos en la solicitud" });
             }
 
-            // Llama al servicio para agregar el producto al carrito
             const cart = await CartService.addProductToCartAsync(cid, pid);
 
             if (!cart) {
@@ -155,31 +164,39 @@ export class CartController {
         }
     }
 
-    static async purchaseCartAsync(req,res) {
-    try {
-        const {cid} = req.params 
-        const uid = req.user._id
-        const cart = await CartService.getCartByIdAsync(cid)      
-        
-        const result = await CartService.purchaseCartAsync(cid,uid)
-        
-        if (!result.success) {
-            return res.status(400).json({
-                error: result.error,
-                details: result.details,
-            });
-        }
+    static async purchaseAsync(req, res) {
+        try {
+            console.log("User object:", req.user);
 
-        res.status(200).json({
-            message: "Compra finalizada",
-            ticket: result.ticket,
-        });
+            const { cid } = req.params; 
+            const userEmail = req.user.email
+            console.log(userEmail)
+    
+            if (!userEmail) {
+                return res.status(400).json({ error: 'UID no encontrado, usuario no autenticado.' });
+            }
+
+            console.log("estamos en purchase controller")
+
+            // Llamada al servicio para procesar la compra
+            const result = await CartService.purchaseAsync(cid, userEmail);
         
-    } catch (error) {
-        res.status(500).json({
-            error: "Error al finalizar la compra",
-            details: error.message,
-        });
+            if (!result.success) {
+                return res.status(400).json({
+                error: result.message,
+                details: result.details,
+                });
+            }
+        
+            res.status(200).json({
+                message: "Compra finalizada",
+                ticket: result.ticket,
+            });
+            } catch (error) {
+            res.status(500).json({
+                error: "Error al finalizar la compra",
+                details: error.message,
+            });
+            }
     }
-}
 }

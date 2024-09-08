@@ -2,15 +2,15 @@ import { ProductsDao } from "../DAO/products.dao.js";
 
 export class ProductService {
     static async getAllProductsAsync() {
-        return await ProductsDao.getProductsAsync()
+        return await ProductsDao.getAllProductsAsync()
     }
 
     static async getProductByIdAsync(id) {
         return await ProductsDao.getProductByIdAsync(id)
     }
 
-    static async addProductAsync({title,description,thumbnail,code,stock,price,status}) {
-        return await ProductsDao.addProductAsync({title,description,thumbnail,code,stock,price,status})
+    static async addProductAsync({title,description,thumbnail,code,stock,price,status,category}) {
+        return await ProductsDao.addProductAsync({title,description,thumbnail,code,stock,price,status,category})
     }
 
     static async updateProductAsync(pid,productToReplace){
@@ -19,5 +19,10 @@ export class ProductService {
 
     static async deleteProductAsync (pid) {
         return await ProductsDao.deleteProductAsync(pid)
+    }
+
+    static async discountStockAsync(pid,quantity)
+    {
+        return await ProductsDao.discountStockAsync(pid,quantity)
     }
 }
