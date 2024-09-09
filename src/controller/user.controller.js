@@ -1,3 +1,4 @@
+import { MailService } from "../services/mail.service.js";
 import { ProductService } from "../services/product.service.js";
 import { UserService } from "../services/user.service.js";
 
@@ -33,13 +34,19 @@ export class UserController {
 
             const user = await UserService.addUserAsync({first_name, last_name, email, age, password})
 
+
+            await MailService.sendMail({
+                to:email,
+                subject: "New user registered",
+                html:`<h1>Nuevo usuario registrado</h1><p>Name: ${name}</p><p>Email:${email}</p><p>Phone: ${phone}</p>`,
+
+            })
+
             res.json(user)
 
         } catch (error) {            
             
         }
-
-
     }
 
     static async updateUserAsync(req,res) {
