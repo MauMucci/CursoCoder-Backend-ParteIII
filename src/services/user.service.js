@@ -14,12 +14,12 @@ export class UserService {
         return await UserDao.addUserAsync(user)
     }
 
-    static async addMockUserAsync(user){
-        return await UserDao.addMockUserAsync(user)
+    static async addMockUserAsync(mockUser){
+        return await UserDao.addMockUserAsync(mockUser)
     }
 
-    static async addManyMockUsersAsync(users){
-        return await UserDao.addManyMockUsersAsync(users)
+    static async addManyMockUsersAsync(mockUsers){
+        return await UserDao.addManyMockUsersAsync(mockUsers)
     }
 
 

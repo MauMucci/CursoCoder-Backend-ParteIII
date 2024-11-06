@@ -1,4 +1,6 @@
 import { ProductService } from "../services/product.service.js";
+import { faker } from "@faker-js/faker";
+
 
 export class ProductController {
 
@@ -39,6 +41,33 @@ export class ProductController {
 
             res.status(500).json({ error: "Error al crear el producto", details: error.message });
         }
+    }
+
+    static async addMockProductAsync(req,res){
+        try {
+
+            
+            const mockProduct = {
+                
+                title: faker.commerce.product(),
+                description: faker.commerce.productDescription(),
+                thumbnail: faker.image.avatar(),  
+                //code: `${title}${date}`,  
+                stock: faker.number.int({ min: 80000, max: 1000000 }),
+                price: faker.commerce.price({ min: 1, max: 1000 }),
+                category: faker.commerce.department(),
+                status: faker.datatype.boolean()
+            }
+
+            await ProductService.addMockProductAsync(mockProduct)        
+        
+            return res.status(201).json({response: mockProduct ,message:"PRODUCTO MOCK CREADO"})
+
+
+        } catch (error) {
+            return res.status(500).json({ error: "Error al crear producto mock", details: error.message });
+        }
+
     }
 
     static async updateProductAsync(req,res){

@@ -13,6 +13,15 @@ export class ProductService {
         return await ProductsDao.addProductAsync({title,description,thumbnail,code,stock,price,status,category})
     }
 
+    //- + - + 
+    static async addMockProductAsync(mockProduct){
+        return await ProductsDao.addMockProductAsync(mockProduct)
+    }
+
+
+    //- + - + 
+
+
     static async updateProductAsync(pid,productToReplace){
         return await ProductsDao.updateProductAsync(pid,productToReplace)
     }

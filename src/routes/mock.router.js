@@ -10,6 +10,10 @@ mockRouter.get('/', UserController.getAllUsersAsync)
 mockRouter.get('/user', UserController.addMockUserAsync)
 mockRouter.get('/users/:quantity', UserController.addManyMockUsersAsync)
 
+
+mockRouter.get('/product', ProductController.addMockProductAsync)
+//mockRouter.get('/products/:quantity', ProductController.addManyMockUsersAsync)
+
 //mockRouter.get('/mocks/products/:n',ProductController.addProductMockAsync)
 
 export default mockRouter 

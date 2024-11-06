@@ -81,7 +81,7 @@ export class UserController {
             const last_name = faker.person.lastName().toLowerCase();
             const email = `${first_name}${last_name}@coder.com`;
 
-            const user = {
+            const mockUser = {
                 first_name,
                 last_name,
                 email,
@@ -89,9 +89,9 @@ export class UserController {
                 password: faker.internet.password()
             }
 
-            await UserService.addMockUserAsync(user)
+            await UserService.addMockUserAsync(mockUser)
 
-            return res.status(201).json({response: user ,message:"USUARIO MOCK CREADO"})
+            return res.status(201).json({response: mockUser ,message:"USUARIO MOCK CREADO"})
             
         } catch (error) {
             return res.status(500).json({ error: "Error al crear usuario mock", details: error.message });

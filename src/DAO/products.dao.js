@@ -1,3 +1,4 @@
+import { MockProductModel } from "../Mongo/Models/mockProduct.model.js";
 import { ProductModel } from "../Mongo/Models/product.model.js";
 
 export class ProductsDao {
@@ -18,6 +19,21 @@ export class ProductsDao {
 
         return await ProductModel.create({title,description,thumbnail,code,stock,price,status,category})
     }
+
+    static addMockProductAsync = async (mockProduct) => {
+        try {
+            const newMockProduct = new MockProductModel(mockProduct)
+            return await newMockProduct.save();
+        } catch (error) {
+            console.error(`Error al crear el producto mock: ${error.message}`);
+            throw error;
+        }
+    }
+
+
+
+
+
 
     static updateProductAsync = async (pid, productToReplace) => {
         if (!productToReplace.title || !productToReplace.description || !productToReplace.price || !productToReplace.thumbnail || !productToReplace.code || !productToReplace.stock) {
