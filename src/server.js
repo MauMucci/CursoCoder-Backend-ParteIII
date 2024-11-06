@@ -10,10 +10,9 @@ import { initializePassport } from './config/passport.config.js';
 import { config } from './config/config.js';
 import cookieParser from 'cookie-parser';
 import viewsRouter from './routes/views.router.js';
-import session from 'express-session';
 
 const app = express()   
-const PORT = 5000;
+const PORT = config.PORT
 
 const httpServer = app.listen(PORT, ()=>console.log(`Servidor escuchando desde puerto  ${PORT}`))
 

@@ -1,4 +1,5 @@
 import { userModel } from "../Mongo/Models/user.model.js";
+import { mockUserModel } from "../Mongo/Models/mockUser.model.js";
 
 export class UserDao {
     
@@ -11,7 +12,17 @@ export class UserDao {
     }
 
     static async addUserAsync(user){
-        return await userModel.save(user)
+        const newUser = new userModel(user); // Crear una nueva instancia de userModel
+        return await newUser.save(); // Guardar la instancia
+    }
+
+    static async addMockUserAsync(user){
+        const newUser = new mockUserModel(user); // Crear una nueva instancia de userModel
+        return await newUser.save(); // Guardar la instancia
+    }
+
+    static async addManyMockUsersAsync(users){
+        return await mockUserModel.insertMany(users)
     }
     
     

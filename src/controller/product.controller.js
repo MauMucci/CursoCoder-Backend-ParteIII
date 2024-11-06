@@ -1,4 +1,3 @@
-import { ProductModel } from "../Mongo/Models/product.model.js";
 import { ProductService } from "../services/product.service.js";
 
 export class ProductController {
@@ -61,6 +60,16 @@ export class ProductController {
 
         pid = req.params
         return await ProductService.deleteProductAsync(pid)
+    }
+
+
+    static async addProductMockAsync(req,res){
+        try {
+
+            
+        } catch (error) {
+            
+        }
     }
 
 
