@@ -66,8 +66,39 @@ export class ProductController {
 
         } catch (error) {
             return res.status(500).json({ error: "Error al crear producto mock", details: error.message });
-        }
+        }    
 
+    }
+
+    static async addManyMocksProductsAsync(req,res){
+        try {
+            const {quantity} = req.params
+            const products = []
+
+            for(let i=0; i < quantity; i++){
+
+                const mockProduct = {
+                
+                    title: faker.commerce.product(),
+                    description: faker.commerce.productDescription(),
+                    thumbnail: faker.image.avatar(),  
+                    //code: `${title}${date}`,  
+                    stock: faker.number.int({ min: 80000, max: 1000000 }),
+                    price: faker.commerce.price({ min: 1, max: 1000 }),
+                    category: faker.commerce.department(),
+                    status: faker.datatype.boolean()
+                }
+
+                products.push(mockProduct)
+            }
+
+            await ProductService.addManyMocksProductsAsync(products)
+            res.status(201).json({ message: `${quantity} PRODUCTOS mock creados y guardados en la base de datos` });
+
+        } catch (error) {
+            res.status(500).json({ error: "Error al crear usuarios mock", details: error.message });
+            
+        }
     }
 
     static async updateProductAsync(req,res){

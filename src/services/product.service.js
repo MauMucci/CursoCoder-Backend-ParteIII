@@ -18,6 +18,9 @@ export class ProductService {
         return await ProductsDao.addMockProductAsync(mockProduct)
     }
 
+    static async addManyMocksProductsAsync(mockProducts){
+        return await ProductsDao.addManyMocksProductsAsync(mockProducts)
+    }
 
     //- + - + 
 

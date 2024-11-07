@@ -77,14 +77,10 @@ export class UserController {
     static async addMockUserAsync (req,res) {
         try {
 
-            const first_name = faker.person.firstName().toLowerCase();
-            const last_name = faker.person.lastName().toLowerCase();
-            const email = `${first_name}${last_name}@coder.com`;
-
             const mockUser = {
-                first_name,
-                last_name,
-                email,
+                first_name: faker.person.firstName().toLowerCase(),
+                last_name:faker.person.lastName().toLowerCase(),
+                email:`${first_name}${last_name}@coder.com`,
                 age: faker.number.int({ min: 18, max: 100 }),
                 password: faker.internet.password()
             }
@@ -106,15 +102,11 @@ export class UserController {
             const users = []
 
             for(let i=0; i<= quantity; i++){
-
-                const first_name = faker.person.firstName().toLowerCase();
-                const last_name = faker.person.lastName().toLowerCase();
-                const email = `${first_name}${last_name}@coder.com`;
-    
+                    
                 const user = {
-                    first_name,
-                    last_name,
-                    email,
+                    first_name: faker.person.firstName().toLowerCase(),
+                    last_name:faker.person.lastName().toLowerCase(),
+                    email:`${first_name}${last_name}@coder.com`,
                     age: faker.number.int({ min: 18, max: 100 }),
                     password: faker.internet.password()
                 }

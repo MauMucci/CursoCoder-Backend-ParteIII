@@ -30,6 +30,10 @@ export class ProductsDao {
         }
     }
 
+    static addManyMocksProductsAsync = async (products) => {
+        return await MockProductModel.insertMany(products)
+    }
+
 
 
 
