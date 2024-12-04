@@ -1,0 +1,103 @@
+paths:
+  /carts:
+    get:
+      summary: Obtener todos los carritos
+      tags:
+        - Carts
+      responses:
+        '200':
+          $ref: '#/components/responses/res200'
+        '500':
+          $ref: '#/components/responses/res500'
+
+    post:
+      summary: Crear un nuevo carrito
+      tags:
+        - Carts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+      responses:
+        '200':
+          $ref: '#/components/responses/res200'
+        '400':
+          $ref: '#/components/responses/res400'
+        '500':
+          $ref: '#/components/responses/res500'
+
+  /carts/{id}:
+    get:
+      summary: Obtener un carrito por ID
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID del carrito
+      responses:
+        '200':
+          $ref: '#/components/responses/res200'
+        '404':
+          $ref: '#/components/responses/res404'
+        '500':
+          $ref: '#/components/responses/res500'
+
+    put:
+      summary: Actualizar un carrito por ID
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID del carrito
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+      responses:
+        '200':
+          $ref: '#/components/responses/res200'
+        '400':
+          $ref: '#/components/responses/res400'
+        '404':
+          $ref: '#/components/responses/res404'
+        '500':
+          $ref: '#/components/responses/res500'
+
+    delete:
+      summary: Eliminar un carrito por ID
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID del carrito
+      responses:
+        '200':
+          description: Carrito eliminado con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Carrito eliminado con éxito
+        '404':
+          $ref: '#/components/responses/res404'
+        '500':
+          $ref: '#/components/responses/res500'

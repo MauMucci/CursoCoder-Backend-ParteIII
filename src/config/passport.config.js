@@ -62,7 +62,7 @@ function cookieExtractor(req) {
     token = req.cookies["token"];
   }
 
-  console.log("cookieExtractor", token); 
+  //console.log("cookieExtractor", token); 
   return token;
 }
 

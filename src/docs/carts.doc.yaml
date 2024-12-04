@@ -1,0 +1,32 @@
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                type: string
+                description: ID del producto en el carrito
+              quantity:
+                type: number
+                description: Cantidad de este producto
+        createdAt:
+          type: string
+          format: date-time
+          description: Fecha de creación del carrito
+        updatedAt:
+          type: string
+          format: date-time
+          description: Fecha de última actualización del carrito
+      example:
+        products:
+          - product: 60c72b2f9f1a256f5c36c0e7
+            quantity: 2
+          - product: 60c72b2f9f1a256f5c36c0e8
+            quantity: 1
+        createdAt: "2024-11-01T10:00:00.000Z"
+        updatedAt: "2024-11-05T14:00:00.000Z"

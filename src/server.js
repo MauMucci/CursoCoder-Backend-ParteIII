@@ -13,6 +13,7 @@ import viewsRouter from './routes/views.router.js';
 import errorHandler from './middlewares/errorHandler.mid.js';
 import winston  from './middlewares/winstoneLogger.mid.js';
 
+
 const app = express()   
 const PORT = config.PORT
 
@@ -35,7 +36,7 @@ app.use(passport.initialize())
 
 //Routes
 app.use("/api", indexRouter);
-app.use('/',viewsRouter)
+app.use('/', viewsRouter)
 
 app.use("*", (req, res) => {
     res.status(404).json({
@@ -91,5 +92,6 @@ app.use(errorHandler);
 
 //Winstone
 app.use(winston)
+
 
     

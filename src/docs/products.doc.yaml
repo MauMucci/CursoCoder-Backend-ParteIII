@@ -1,0 +1,193 @@
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Nombre del producto
+        description:
+          type: string
+          description: Descripción del producto
+        thumbnail:
+          type: string
+          description: URL de la imagen del producto
+        code:
+          type: string
+          description: Código único del producto
+        stock:
+          type: number
+          description: Stock disponible
+        price:
+          type: number
+          description: Precio del producto
+        category:
+          type: string
+          description: Categoría del producto
+        status:
+          type: boolean
+          description: Estado del producto (activo/inactivo)
+      example:
+        title: "Motorola"
+        description: "Moto G Fusion"
+        thumbnail: "https://example.com/motorola-thumbnail.jpg"
+        code: "MGFUSION-ARG"
+        stock: 100
+        price: 17499
+        category: "Smartphones"
+        status: true
+
+  responses:
+    res200:
+      description: Operación exitosa
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Operación realizada con éxito
+              data:
+                oneOf:
+                  - $ref: '#/components/schemas/Product'
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+
+    res400:
+      description: Error de solicitud
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Error en la solicitud
+
+    res404:
+      description: Recurso no encontrado
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Producto no encontrado
+
+    res500:
+      description: Error del servidor
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Error del servidor
+
+paths:
+  /products:
+    get:
+      summary: Obtener todos los productos
+      tags:
+        - Products
+      responses:
+        '200':
+          $ref: '#/components/responses/res200'
+        '500':
+          $ref: '#/components/responses/res500'
+
+    post:
+      summary: Crear un nuevo producto
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          $ref: '#/components/responses/res200'
+        '400':
+          $ref: '#/components/responses/res400'
+        '500':
+          $ref: '#/components/responses/res500'
+
+  /products/{id}:
+    get:
+      summary: Obtener un producto por ID
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID del producto
+      responses:
+        '200':
+          $ref: '#/components/responses/res200'
+        '404':
+          $ref: '#/components/responses/res404'
+        '500':
+          $ref: '#/components/responses/res500'
+
+    put:
+      summary: Actualizar un producto por ID
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID del producto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          $ref: '#/components/responses/res200'
+        '400':
+          $ref: '#/components/responses/res400'
+        '404':
+          $ref: '#/components/responses/res404'
+        '500':
+          $ref: '#/components/responses/res500'
+
+    delete:
+      summary: Eliminar un producto por ID
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID del producto
+      responses:
+        '200':
+          description: Producto eliminado con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Producto eliminado con éxito
+        '404':
+          $ref: '#/components/responses/res404'
+        '500':
+          $ref: '#/components/responses/res500'
