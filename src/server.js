@@ -3,19 +3,19 @@ import path from 'path';
 import __dirname from './utils.js';
 import { Server } from 'socket.io';
 import indexRouter from './routes/index.js'
-import mongoose from 'mongoose';
 import handlebars from 'express-handlebars';
 import passport from 'passport';
 import { initializePassport } from './config/passport.config.js';
-import { config } from './config/config.js';
+import { envConfig } from './config/env.config.js';
 import cookieParser from 'cookie-parser';
 import viewsRouter from './routes/views.router.js';
 import errorHandler from './middlewares/errorHandler.mid.js';
 import winston  from './middlewares/winstoneLogger.mid.js';
+import { dbConnect } from './utils/dbConnect.utils.js';
 
 
 const app = express()   
-const PORT = config.PORT
+const PORT = envConfig.PORT
 
 const httpServer = app.listen(PORT, ()=>console.log(`Servidor escuchando desde puerto  ${PORT}`))
 
@@ -80,12 +80,7 @@ io.on('connection',(socket) => {
 })
 
 //Mongoose
-mongoose.connect(config.MONGO_URI)
-.then(console.log("CONECTADO A LA BASE DE DATOS"))
-.catch(error => {
-    console.log("ERROR AL CONECTARSE A LA BASE DE DATOS")
-    console.log(error)
-})
+dbConnect()
 
 //Error handler
 app.use(errorHandler);

@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken"
-import { config } from "../config/config.js"
+import { envConfig } from "../config/env.config.js"
 
-const {JWT_SECRET} = config
+const {JWT_SECRET} = envConfig
 
 export const generateToken = (payload) => {
     const token = jwt.sign(payload, JWT_SECRET, {expiresIn:"30m"})

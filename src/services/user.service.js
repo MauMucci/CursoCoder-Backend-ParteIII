@@ -10,6 +10,7 @@ export class UserService {
         return await UserDao.getUserByIdAsync(uid)
     }
 
+
     static async addUserAsync(user){
         return await UserDao.addUserAsync(user)
     }

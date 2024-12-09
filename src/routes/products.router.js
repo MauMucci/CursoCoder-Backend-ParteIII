@@ -11,7 +11,11 @@ const productsRouter = express.Router()
 productsRouter.get('/',ProductController.getAllProductsAsync)
 productsRouter.get('/:pid',ProductController.getProductByIdAsync)
 
-productsRouter.post('/',validateDTO(productDto),authenticate("jwt"),authorizations(["admin"]),ProductController.addProductAsync)
+//productsRouter.post('/',validateDTO(productDto),authenticate("jwt"),authorizations(["admin"]),ProductController.addProductAsync)
+
+//Agrego esta ruta para agregar productos sin necesidad de ser admin
+productsRouter.post('/',ProductController.addProductAsync)
+
 
 productsRouter.put('/:pid',validateDTO(productDto),authenticate("jwt"),authorizations(["admin"]),ProductController.updateProductAsync)
 

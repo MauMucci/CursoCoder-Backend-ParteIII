@@ -1,15 +1,15 @@
 import nodemailer from 'nodemailer'
-import { config } from '../config/config.js'
+import { envConfig } from '../config/env.config.js'
 
 export class MailService {
 
     constructor(){
         this.transporter = nodemailer.createTransport({
-            host:config.mailer.host,
-            port:config.mailer.port,
+            host:envConfig.mailer.host,
+            port:envConfig.mailer.port,
             auth:{
-                user: config.mailer.auth.user,
-                pass: config.mailer.auth.pass
+                user: envConfig.mailer.auth.user,
+                pass: envConfig.mailer.auth.pass
             }
         })
         this.from = "maumucci91@gmail.com"

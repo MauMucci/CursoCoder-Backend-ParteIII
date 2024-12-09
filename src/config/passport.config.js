@@ -3,7 +3,7 @@ import jwt from "passport-jwt";
 import localStrategy from "passport-local";
 import { userModel } from "../Mongo/Models/user.model.js";
 import { verifyPassword } from "../utils/hashFunctions.js";
-import { config } from "./config.js";
+import { envConfig } from "./env.config.js";
 
 const LocalStrategy = localStrategy.Strategy;
 const JWTStrategy = jwt.Strategy;
@@ -41,7 +41,7 @@ function initializePassport() {
 
   
   // JWT Strategy
-  passport.use("jwt",new JWTStrategy({jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),secretOrKey: config.JWT_SECRET,},
+  passport.use("jwt",new JWTStrategy({jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),secretOrKey: envConfig.JWT_SECRET,},
   
       async (payload, done) => {
         console.log("Payload JWT:", payload); 

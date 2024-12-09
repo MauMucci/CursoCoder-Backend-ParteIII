@@ -7,8 +7,8 @@ export class UserDao {
         return await userModel.find()
     }
 
-    static async getUserByEmailAsync(email){
-        return await userModel.findOne(email)
+    static async getUserByIdAsync(id){
+        return await userModel.findById(id)
     }
 
     static async addUserAsync(user){

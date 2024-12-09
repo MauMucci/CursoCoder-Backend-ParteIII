@@ -5,7 +5,7 @@ const userSchema = new Schema({
     first_name:{type:String,required:true},
     last_name:{type:String,required:true},
     email:{type:String,required:true,unique:true},
-    age:{type:Number,required:true},
+    age:{type:Number,required:true, default:18},
     password:{type:String,required:true},
     cartId:{type:Schema.Types.ObjectId, ref:"cart"},
     role:{

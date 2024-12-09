@@ -4,7 +4,7 @@ import args from "../utils/args.utils.js";
 const enviroment = args.mode === 'prod' ? '.env.prod' : '.env.dev'
 dotenv.config({ path: enviroment });
 
-export const config = {
+export const envConfig = {
   PORT: process.env.PORT,
   MONGO_URI: process.env.MONGO_URI,
   JWT_SECRET: process.env.JWT_SECRET,
