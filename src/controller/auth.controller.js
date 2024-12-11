@@ -69,21 +69,28 @@ export class AuthController {
       });
 
       
-      await mailService.sendMail({
-        to: email,
-        subject: "New user registered",
-        html: `<h1>Nuevo usuario registrado</h1><p>First Name: ${first_name}</p><p>Last Name: ${last_name}</p><p>Email: ${email}</p>`,
-      });
+      // await mailService.sendMail({
+      //   to: email,
+      //   subject: "New user registered",
+      //   html: `<h1>Nuevo usuario registrado</h1><p>First Name: ${first_name}</p><p>Last Name: ${last_name}</p><p>Email: ${email}</p>`,
+      // });
       
       await user.save();
-      res.json({ message: `Usuario registrado correctamente`, user });
-      console.log("Usuario creado ", user);
-    } catch (error) {
-      res.status(500).json({
-        error: "Hubo un error",
-        details: error.message,
-      });
-    }
+
+   
+    res.json({
+      message: "Usuario registrado correctamente",
+      user,
+    });
+    
+    console.log("Usuario creado ", user);
+
+  } catch (error) {
+    res.status(500).json({
+      error: "Hubo un error",
+      details: error.message,
+    });
+  }
   }
 
 

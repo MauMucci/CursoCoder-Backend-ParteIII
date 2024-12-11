@@ -14,7 +14,7 @@ import winston  from './middlewares/winstoneLogger.mid.js';
 import { dbConnect } from './utils/dbConnect.utils.js';
 
 
-const app = express()   
+export const app = express()   
 const PORT = envConfig.PORT
 
 const httpServer = app.listen(PORT, ()=>console.log(`Servidor escuchando desde puerto  ${PORT}`))
