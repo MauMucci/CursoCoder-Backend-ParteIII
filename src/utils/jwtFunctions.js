@@ -5,6 +5,9 @@ const {JWT_SECRET} = envConfig
 
 export const generateToken = (payload) => {
     const token = jwt.sign(payload, JWT_SECRET, {expiresIn:"30m"})
+    console.log('Payload:', payload);
+    console.log('Token generado:', token);    
+    
     return token
 }
 
