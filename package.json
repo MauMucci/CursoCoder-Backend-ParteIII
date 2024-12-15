@@ -16,7 +16,7 @@
     "test:supertest:products": "mocha ./src/test/products/products.supertest.test.js",
 
     "image": "docker build -t codercommerce .",
-    "docker": "docker run -p 9000:9000 codercommerce",
+    "docker": "docker run -p 9000:9000 codercommerce"
 
   },
   "dependencies": {

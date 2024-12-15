@@ -1,5 +1,6 @@
 import passport from "passport";
 import jwt from "passport-jwt";
+
 import localStrategy from "passport-local";
 import { userModel } from "../Mongo/Models/user.model.js";
 import { verifyPassword } from "../utils/hashFunctions.js";
@@ -9,7 +10,7 @@ const LocalStrategy = localStrategy.Strategy;
 const JWTStrategy = jwt.Strategy;
 const ExtractJWT = jwt.ExtractJwt;
 
-function initializePassport() {
+export function initializePassport() {
 
   // Login Strategy
   passport.use("login",new LocalStrategy({usernameField: "email",},
@@ -40,8 +41,13 @@ function initializePassport() {
   );
 
   
-  // JWT Strategy
-  passport.use("jwt",new JWTStrategy({jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),secretOrKey: envConfig.JWT_SECRET,},
+//   // JWT Strategy
+  passport.use("jwt",
+    new JWTStrategy({
+      //Dejo de trabajar con cookie y paso a trabajar con header
+      //jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
+      jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+      secretOrKey: envConfig.JWT_SECRET,},
   
       async (payload, done) => {
         console.log("Payload JWT:", payload); 
@@ -55,6 +61,7 @@ function initializePassport() {
   );
 }
 
+
 function cookieExtractor(req) {
   let token = null;
 
@@ -66,4 +73,5 @@ function cookieExtractor(req) {
   return token;
 }
 
-export { initializePassport };
+
+
