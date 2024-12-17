@@ -9,12 +9,12 @@ describe(
     "Testeando las funcionalidades de Products con CHAI",
     () => {
         const exampleProduct = {
-            title: "Iphone",
-            description: "16 pro Max",
+            title: "Example 1",
+            description: "description example ",
             thumbnail: "https://example.com/iphnone-thumbnail.jpg",
-            code: "IPHONE16PROMAX-ARG",
+            code: "EX",
             stock: 20,
-            price: 1600,
+            price: 11111,
             category: "Smartphones",
             status: true
 

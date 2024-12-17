@@ -9,7 +9,10 @@ export class UserService {
     static async getUserByIdAsync(uid){
         return await UserDao.getUserByIdAsync(uid)
     }
-
+     
+    static async updateUserAsync(id,userToRemplace){
+        return await UserDao.updateUserAsync(id,userToRemplace)
+    }
 
     static async addUserAsync(user){
         return await UserDao.addUserAsync(user)
@@ -24,7 +27,7 @@ export class UserService {
     }
 
 
-    static async deleteUserAsync(uid){
-        return await UserDao.deleteUserAsync(uid)
+    static async deleteUserAsync(id){
+        return await UserDao.deleteUserAsync(id)
     }
 }

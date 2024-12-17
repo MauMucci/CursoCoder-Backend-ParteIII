@@ -1,15 +1,14 @@
-import { Router } from "express";
-import CartModel from "../Mongo/Models/cart.model.js";
 import { CartService } from "../services/cart.service.js";
 
 export class CartController {
 
 
-    static async getAllCartsAsync(){
+    static async getAllCartsAsync(req,res){
         try {
-            const carts = await CartService.getAllCartsAsync()
+
+            const carts = await CartService.getAllCartAsync()
             
-            if(!cart){
+            if(!carts){
                 return res.status(404).json({
                     error: "No se encontro el carrito"
                 })
@@ -91,41 +90,48 @@ export class CartController {
         }
     }
 
-    static async deleteProductFromCartAsync (req,res) {
-
+    static async deleteProductFromCartAsync (req, res) {
         try {
             const { cid, pid } = req.params;
-
+    
             if (!cid || !pid) {
                 return res.status(400).json({ error: "Parámetros inválidos en la solicitud" });
             }
+    
+            const cart = await CartService.getCartByIdAsync(cid);
+    
+            console.log("Numero de cart:" ,cart._id)
+            //console.log("cart" ,cart)
+            if (!cart) {
+                return res.status(404).json({ error: "Carrito no encontrado" });
+            }
+    
             
-            const cart = CartService.getCartByIdAsync(cid)
+            console.log("Id de product:" ,cart.products[0].product._id)
 
 
-            const isProductInCart = cart.products.filter((p) => p.pid != pid)
+            const productIndex = cart.products.findIndex((p) => p.product._id.toString() === pid);
+            console.log("Product index" ,productIndex)
+    
+            if (productIndex !== -1) {
+                cart.products.splice(productIndex, 1);
+                await cart.save();  
+    
 
-            if (isProductInCart) {
-                cart.products = cart.products.filter((p) => p.product !== productId);
-                cart.save();
-        
-                res.json(cart);
-              } else {
+
+                return res.json(cart);
+            } else {
                 return res.status(404).json({
-                  error: "Producto no encontrado",
+                    error: "Producto no encontrado en el carrito",
                 });
-              }
-
-
+            }
+    
         } catch (error) {
-
             res.status(500).json({
-            error: "Error al eliminar el producto del carrito",
-            details: error.message,
-            
-        })
-    }
-
+                error: "Error al eliminar el producto del carrito",
+                details: error.message,
+            });
+        }
     }
 
     static async deleteAllProductsFromCartAsync(req,res){

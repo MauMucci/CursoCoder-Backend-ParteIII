@@ -4,11 +4,12 @@ import { envConfig } from "../config/env.config.js";
 
 const requester = supertest(`http://localhost:${envConfig.PORT}/api`);
 
-let createdUserId;
-
 describe("Test de Auth Controller", () => {
     
-    describe("Post en api/auth/register para REGISTRAR UN USUAIO", () => {
+    let createdUserId = null;
+    let token = '';
+
+    describe("DEBERIA REGISTRAR, LOGEAR Y ELIMINAR UN USUARIO", () => {
 
         it("Debería crear un usuario nuevo correctamente", async () => {
             const newUser = {
@@ -21,33 +22,36 @@ describe("Test de Auth Controller", () => {
             };
             const res = await requester.post("/auth/register").send(newUser);
 
+            createdUserId = res.body.user._id;
+
             expect(res.status).to.equal(200);
             expect(res.body).to.have.property("message", "Usuario registrado correctamente");
             expect(res.body).to.have.property("user");
-
-            createdUserId = res.body._id;
         });
         
         it("Debería iniciar sesión correctamente", async () => {
-        const userToLogin = {
-            email: "t2@example.com",
-            password: "pass123"
-        };
+            const userToLogin = {
+                email: "t2@example.com",
+                password: "pass123"
+            };
 
-        const res = await requester.post("/auth/login").send(userToLogin);
-        expect(res.status).to.equal(200);
-        expect(res.body).to.have.property("message", "Sesión iniciada");
+            const res = await requester.post("/auth/login").send(userToLogin);
+
+            token = res.body.token; // Almacena el token de sesión
+
+            expect(res.status).to.equal(200);
+            expect(res.body).to.have.property("message", "Sesión iniciada");
+        });
+
+        it("Debería eliminar el usuario creado correctamente", async () => {
+            console.log("Token de sesión:", token);
+            console.log("Usuario a eliminar: ", createdUserId)
+
+            const res = await requester.delete(`/users/${createdUserId}`)
+                .set("Authorization", `Bearer ${token}`); // Se añade el token para la autorización
+
+            expect(res.status).to.equal(200);
+            expect(res.body).to.have.property("message", "Usuario eliminado correctamente");
+        });
     });
-
-    // it("Debería eliminar el usuario creado correctamente", async () => {
-    //     if (!createdUserId) {
-    //         throw new Error("createdUserId no está definido");
-    //     }
-
-    //     const res = await requester.delete(`/auth/users/${createdUserId}`);
-        
-    //     expect(res.status).to.equal(200);
-    //     expect(res.body).to.have.property("message", "Usuario eliminado correctamente");
-    // });
-});
 });

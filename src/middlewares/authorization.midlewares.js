@@ -26,7 +26,7 @@ export function authenticate(strategy) {
           });
 
         req.user = user;
-        console.log("usuario desde authorization midleware: ",req.user._id)
+        //console.log("usuario desde authorization midleware: ",req.user._id)
         next();
       }
     )(req, res, next);

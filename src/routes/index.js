@@ -12,10 +12,12 @@ import opts from "../utils/swagger.utils.js";
 const indexRouter = Router()
 
 indexRouter.use('/auth',authRouter)
-indexRouter.use('/carts',authenticate("jwt"),authorizations(["user"]),cartsRouter)
+indexRouter.use('/carts',authenticate("jwt"),authorizations(["admin"]),cartsRouter)
 indexRouter.use('/products',productsRouter)
 indexRouter.use("/users",authenticate("jwt"),authorizations(["admin"]),userRouter)
 //indexRouter.use("/users",userRouter)
+
+
 indexRouter.use('/mocks',mockRouter)
 
 

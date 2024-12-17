@@ -3,6 +3,7 @@ import { ProductService } from "../services/product.service.js";
 import { UserService } from "../services/user.service.js";
 import { faker } from "@faker-js/faker";
 import winstonLogger from "../utils/winston.utils.js";
+import { userModel } from "../Mongo/Models/user.model.js";
 
 export class UserController {
 
@@ -11,6 +12,8 @@ export class UserController {
             const users = await UserService.getAllUsersAsync()
             //aplico winstone.info
             winstonLogger.info(users)
+            console.log("Estamos dentro de getAllUsers")
+
 
             res.json(users)
 
@@ -20,12 +23,19 @@ export class UserController {
         }
     }
 
-    static async getUserByIdAsync(req,res){
-        try {
-            const {uid} = req.params
-            const users = await UserService.getUserByIdAsync(uid)
 
-            res.json(users)
+
+    static async getUserByIdAsync(req,res){
+        
+        const { id } = req.params
+        try {
+
+            const cleanedId = id.trim()
+            console.log(cleanedId)
+            const user = await UserService.getUserByIdAsync(cleanedId)
+            console.log("Estamos dentro de getUserByIdAsync")
+            
+            res.json(user)
         } catch (error) {
             res.status(500).json({error: "Error al obtener el usuario",details: error.message})
             
@@ -54,30 +64,44 @@ export class UserController {
         }
     }
 
-    static async updateUserAsync(req,res) {
+    static async updateUserAsync(req, res) {
         try {
-            const {uid} = req.params
-            const userToRemplace = req.body
+            const { id } = req.params;
+            const userToReplace = req.body;
+            const updatedUser = await UserService.updateUserAsync(id, userToReplace);
     
-            await UserService.updateUserAsync(uid,userToRemplace)
-            
+            if (!updatedUser) {
+                return res.status(404).json({ message: "Usuario no encontrado" });
+            }
+    
+            return res.status(200).json({ message: "Usuario actualizado", data: updatedUser });
         } catch (error) {
-            res.status(500).json({error: "error al actualizar el usuario",details:error.message})            
+            if (error.message.includes("ObjectId válido")) {
+                // Maneja IDs no válidos como un error 400
+                return res.status(400).json({ error: "ID inválido", details: error.message });
+            }
+    
+            res.status(500).json({ error: "Error al actualizar el usuario", details: error.message });
         }
-
     }
-
-    static async deleteUserAsync (req,res) {
+    
+    static async deleteUserAsync(req, res) {
+        const { id } = req.params;
         try {
-
-            uid = req.params
-            return await ProductService.deleteUserAsync(uid)
-
+            console.log(id);
+    
+            const cleanedId = id.trim();
+            await UserService.deleteUserAsync(cleanedId);
+    
+            return res.status(200).json({ message: "Usuario eliminado exitosamente" });
         } catch (error) {
-            
+            return res.status(500).json({ error: "Error al eliminar el usuario", details: error.message });
         }
     }
+    
 
+
+    //MOCK
     static async addMockUserAsync (req,res) {
         try {
 

@@ -22,7 +22,7 @@ export function initializePassport() {
             return done(null, false, { message: "Usuario no encontrado" });
           }
 
-          console.log(`usuario encontrado: ${user._id}`)
+          //console.log(`usuario encontrado: ${user._id}`)
 
           const isPasswordCorrect = await verifyPassword(password,user.password);
 
@@ -50,7 +50,7 @@ export function initializePassport() {
       secretOrKey: envConfig.JWT_SECRET,},
   
       async (payload, done) => {
-        console.log("Payload JWT:", payload); 
+        //console.log("Payload JWT:", payload); 
         try {
           done(null, payload);
         } catch (error) {

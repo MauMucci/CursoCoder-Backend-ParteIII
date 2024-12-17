@@ -6,7 +6,7 @@ import { v4 as uuid } from "uuid";
 export class CartService {
 
     static async getAllCartAsync() {
-        return await CartsDao.getCartAsync()
+        return await CartsDao.getAllCartsAsync()
     }
 
     static async getCartByIdAsync (cid) {
@@ -26,7 +26,7 @@ export class CartService {
     }
 
     static async updateCartProductAsync (cid,products) {
-        return await CartsDao.updateCartProductAsync(cid,products)
+        return await CartsDao.updateCartProductsAsync(cid,products)
     }
 
 

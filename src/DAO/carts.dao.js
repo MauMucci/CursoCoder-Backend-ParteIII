@@ -1,5 +1,4 @@
-// carts.dao.js
-import CartModel from "../Mongo/Models/cart.model.js";
+import CartModel from "../Mongo/Models/Cart.model.js";
 import { ProductsDao } from "./products.dao.js";
 
 export class CartsDao {
@@ -118,7 +117,7 @@ export class CartsDao {
                 throw new Error(`Producto con ID ${pid} no encontrado en el carrito`);
             }
 
-            cart.products[productIndex].quantity = quantity;
+            cart.products[productIndex].quantity = quantity;  
             await cart.save();
 
             return cart;
