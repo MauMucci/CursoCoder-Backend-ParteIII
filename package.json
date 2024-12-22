@@ -1,9 +1,9 @@
 {
   "name": "backend_parte_iii",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "src/server.js",
   "scripts": {
-    "start": "node server.js --node prod",
+    "start": "node src/server.js --node prod",
     "dev": "nodemon ./src/server.js -p 5000 --mode=dev",
     "mocha": "mocha ./src/test/mocha",
     "chai": "mocha ./src/test/chai",
