@@ -1,5 +1,5 @@
 import express from 'express';
-import { ProductModel } from '../Mongo/Models/product.model.js';
+import { productModel } from '../Mongo/Models/product.model.js';
 import passport from 'passport';
 
 
@@ -10,7 +10,7 @@ viewsRouter.get('/home',passport.authenticate('jwt',{session:false}), async (req
      const {page=1,limit=5} = req.query 
 
      try {
-          const products = await ProductModel.paginate({},{limit,page})
+          const products = await productModel.paginate({},{limit,page})
 
           res.render('home',{products})
 

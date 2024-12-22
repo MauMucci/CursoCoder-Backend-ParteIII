@@ -1,5 +1,5 @@
 import { MockProductModel } from "../Mongo/Models/mockProduct.model.js";
-import { ProductModel } from "../Mongo/Models/product.model.js";
+import { productModel } from "../Mongo/Models/product.model.js";
 
 export class ProductsDao {
   static getAllProductsAsync = async () => {
@@ -7,7 +7,7 @@ export class ProductsDao {
   };
 
   static getProductByIdAsync = async (pid) => {
-    return await ProductModel.findById(pid);
+    return await productModel.findById(pid);
   };
 
   static addProductAsync = async ({
@@ -33,7 +33,7 @@ export class ProductsDao {
       return null;
     }
 
-    return await ProductModel.create({
+    return await productModel.create({
       title,
       description,
       thumbnail,
@@ -72,16 +72,16 @@ export class ProductsDao {
       return null;
     }
 
-    return await ProductModel.findOneAndUpdate({ _id: pid }, productToReplace);
+    return await productModel.findOneAndUpdate({ _id: pid }, productToReplace);
   };
 
   static deleteProductAsync = async (pid) => {
-    return await ProductModel.deleteOne({ _id: pid });
+    return await productModel.deleteOne({ _id: pid });
   };
 
   static async discountStockAsync(pid, quantity) {
     try {
-      const product = await ProductModel.findById(pid);
+      const product = await productModel.findById(pid);
 
       if (!product) {
         throw new Error("Producto no encontrado");
