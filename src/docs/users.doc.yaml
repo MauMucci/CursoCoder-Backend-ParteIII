@@ -1,9 +1,90 @@
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Nombre de usuario del usuario
+        email:
+          type: string
+          format: email
+          description: Correo electrónico del usuario
+        password:
+          type: string
+          description: Contraseña del usuario (se debe manejar con hash para seguridad)
+        createdAt:
+          type: string
+          format: date-time
+          description: Fecha de creación del usuario
+        updatedAt:
+          type: string
+          format: date-time
+          description: Fecha de última actualización del usuario
+      example:
+        username: "johndoe"
+        email: "johndoe@example.com"
+        password: "securepassword"
+        createdAt: "2024-11-01T10:00:00.000Z"
+        updatedAt: "2024-11-05T14:00:00.000Z"
+
+  responses:
+    res200:
+      description: Operación exitosa
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Operación realizada con éxito"
+              data:
+                oneOf:
+                  - $ref: '#/components/schemas/User'
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+
+    res400:
+      description: Error de solicitud
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Error en la solicitud"
+
+    res404:
+      description: Recurso no encontrado
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Usuario no encontrado"
+
+    res500:
+      description: Error del servidor
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Error del servidor"
+
 paths:
-  /carts:
+  /users:
     get:
-      summary: Obtener todos los carritos
+      summary: Obtener todos los usuarios
       tags:
-        - Carts
+        - Users
       responses:
         '200':
           $ref: '#/components/responses/res200'
@@ -11,15 +92,15 @@ paths:
           $ref: '#/components/responses/res500'
 
     post:
-      summary: Crear un nuevo carrito
+      summary: Crear un nuevo usuario
       tags:
-        - Carts
+        - Users
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Cart'
+              $ref: '#/components/schemas/User'
       responses:
         '200':
           $ref: '#/components/responses/res200'
@@ -28,18 +109,18 @@ paths:
         '500':
           $ref: '#/components/responses/res500'
 
-  /carts/{id}:
+  /users/{id}:
     get:
-      summary: Obtener un carrito por ID
+      summary: Obtener un usuario por ID
       tags:
-        - Carts
+        - Users
       parameters:
         - in: path
           name: id
           schema:
             type: string
           required: true
-          description: ID del carrito
+          description: ID del usuario
       responses:
         '200':
           $ref: '#/components/responses/res200'
@@ -49,22 +130,22 @@ paths:
           $ref: '#/components/responses/res500'
 
     put:
-      summary: Actualizar un carrito por ID
+      summary: Actualizar un usuario por ID
       tags:
-        - Carts
+        - Users
       parameters:
         - in: path
           name: id
           schema:
             type: string
           required: true
-          description: ID del carrito
+          description: ID del usuario
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Cart'
+              $ref: '#/components/schemas/User'
       responses:
         '200':
           $ref: '#/components/responses/res200'
@@ -76,19 +157,19 @@ paths:
           $ref: '#/components/responses/res500'
 
     delete:
-      summary: Eliminar un carrito por ID
+      summary: Eliminar un usuario por ID
       tags:
-        - Carts
+        - Users
       parameters:
         - in: path
           name: id
           schema:
             type: string
           required: true
-          description: ID del carrito
+          description: ID del usuario
       responses:
         '200':
-          description: Carrito eliminado con éxito
+          description: Usuario eliminado con éxito
           content:
             application/json:
               schema:
@@ -96,7 +177,7 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: Carrito eliminado con éxito
+                    example: "Usuario eliminado con éxito"
         '404':
           $ref: '#/components/responses/res404'
         '500':

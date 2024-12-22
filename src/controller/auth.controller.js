@@ -96,7 +96,7 @@ export class AuthController {
 
   static async profile(req, res) {
     console.log(req.user);
-    console.log("estamos en profile 2");
+    console.log("estamos en profile ");
 
     const user = await userModel.findOne({email: req.user.email})
     if(user.email) console.log("SI")
@@ -110,8 +110,8 @@ export class AuthController {
     res.clearCookie("token")
     res.redirect('/');
 
-    // res.json({ message: "Sesión cerrada" }); -> si se usa POSTMAN
-  }
+    res.json({ message: "Sesión cerrada" });
+  }  
 }
 
 

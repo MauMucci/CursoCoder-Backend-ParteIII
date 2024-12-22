@@ -8,7 +8,7 @@ const requester = supertest(`http://localhost:${envConfig.PORT}/api`);
 let adminToken = null;
 const { JWT_SECRET } = envConfig;
 
-describe("Test de User Controller", () => {
+describe("TEST DE USER", () => {
   before(async () => {
     const payload = {
       email: "admin2@example.com",

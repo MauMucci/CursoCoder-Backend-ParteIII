@@ -1,0 +1,253 @@
+openapi: 3.0.0
+info:
+  title: API de Autenticación y Perfil de Usuario
+  version: 1.0.0
+  description: API para el manejo de autenticación de usuarios y la obtención de perfiles.
+components:
+  schemas:
+    UserProfile:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: Nombre del usuario.
+        last_name:
+          type: string
+          description: Apellido del usuario.
+        age:
+          type: number
+          description: Edad del usuario.
+        email:
+          type: string
+          description: Correo electrónico del usuario.
+        role:
+          type: string
+          description: Rol del usuario (por ejemplo, admin, user, etc.).
+      example:
+        first_name: "admin"
+        last_name: "admin"
+        age: 20
+        email: "admin@example.com"
+        role: "admin"
+    User:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: Nombre del usuario.
+        last_name:
+          type: string
+          description: Apellido del usuario.
+        email:
+          type: string
+          description: Correo electrónico del usuario.
+        age:
+          type: number
+          description: Edad del usuario.
+        password:
+          type: string
+          description: Contraseña del usuario (criptografiada).
+        role:
+          type: string
+          description: Rol del usuario (por ejemplo, admin, user, etc.).
+        _id:
+          type: string
+          description: ID único del usuario en la base de datos.
+        carts:
+          type: array
+          items:
+            type: object
+          description: Carritos asociados al usuario.
+        createdAt:
+          type: string
+          format: date-time
+          description: Fecha de creación del usuario.
+        updatedAt:
+          type: string
+          format: date-time
+          description: Fecha de última actualización del usuario.
+      example:
+        first_name: "admin3"
+        last_name: "admin3"
+        email: "admin3@example.com"
+        age: 20
+        password: "$2b$10$uO4468jiCrxJktMw.QbcXutKfpDhs5RhEpUbH9da3SXe6k7sBd1AO"
+        role: "admin"
+        _id: "67658c0dee983b9de5eca338"
+        carts: []
+        createdAt: "2024-12-20T10:00:00.000Z"
+        updatedAt: "2024-12-20T14:00:00.000Z"
+paths:
+  /api/auth/login:
+    post:
+      summary: Iniciar sesión en el sistema.
+      tags:
+        - Auth
+      requestBody:
+        description: Credenciales del usuario para iniciar sesión.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: Correo electrónico del usuario.
+                password:
+                  type: string
+                  description: Contraseña del usuario.
+      responses:
+        200:
+          description: Sesión iniciada correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Sesión iniciada"
+                  token:
+                    type: string
+                    description: Token JWT de sesión.
+        401:
+          description: Usuario o contraseña incorrectos.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Usuario o contraseña incorrecto"
+        500:
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Error al iniciar sesión"
+                  details:
+                    type: string
+                    example: "Detalles del error"
+  /api/auth/login-error:
+    get:
+      summary: Mensaje de error al intentar iniciar sesión.
+      tags:
+        - Auth
+      responses:
+        401:
+          description: Usuario o contraseña incorrectos.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Usuario o contraseña incorrecto"
+  /api/auth/register:
+    post:
+      summary: Registro de un nuevo usuario.
+      tags:
+        - Auth
+      requestBody:
+        description: Información del usuario para registrarse.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        201:
+          description: Usuario registrado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Usuario registrado correctamente"
+                  user:
+                    $ref: '#/components/schemas/User'
+        400:
+          description: Falta información necesaria para el registro.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Falta información"
+        500:
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Hubo un error"
+                  details:
+                    type: string
+                    example: "Detalles del error"
+  /api/auth/profile:
+    get:
+      summary: Obtiene el perfil del usuario autenticado.
+      tags:
+        - Auth
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Información del perfil del usuario autenticado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        401:
+          description: Usuario no autenticado o token inválido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Usuario no autenticado"
+        500:
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Hubo un error al obtener el perfil del usuario"
+                  details:
+                    type: string
+                    example: "Mensaje de error detallado"
+  /api/auth/logout:
+    get:
+      summary: Cierra la sesión del usuario autenticado.
+      tags:
+        - Auth
+      responses:
+        200:
+          description: Sesión cerrada correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Sesión cerrada"

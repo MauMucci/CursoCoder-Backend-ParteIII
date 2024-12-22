@@ -12,3 +12,4 @@ authRouter.get("/profile", passport.authenticate("jwt",{ session: false }),AuthC
 authRouter.get("/logout", AuthController.logout);
 
 export default authRouter;
+  

@@ -1,14 +1,16 @@
-
 export const validateDTO = (schema) => {
-    return (req, res, next) => {
+  return (req, res, next) => {
       const { error } = schema.validate(req.body, { abortEarly: false });
       if (error) {
-        return res.status(400).json({
-          message: "Validation error",
-          details: error.details.map(detail => detail.message),
-        });
+          const errorDetails = error.details.map(detail => ({
+              field: detail.context.key,
+              message: detail.message
+          }));
+          return res.status(400).json({
+              message: "Validation error",
+              errors: errorDetails
+          });
       }
       next();
-    };
   };
-  
+};

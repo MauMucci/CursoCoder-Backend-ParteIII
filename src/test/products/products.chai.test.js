@@ -6,7 +6,7 @@ import assert  from "assert";
 
 
 describe(
-    "Testeando las funcionalidades de Products con CHAI",
+    "ñ las funcionalidades de Products con CHAI",
     () => {
         const exampleProduct = {
             title: "Example 1",
