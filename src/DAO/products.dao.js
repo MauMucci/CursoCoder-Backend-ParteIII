@@ -1,5 +1,5 @@
 import { MockProductModel } from "../Mongo/Models/mockProduct.model.js";
-import { productModel } from "../Mongo/Models/product.model.js";
+import { productModel } from "../Mongo/Models/product2.model.js";
 
 export class ProductsDao {
   static getAllProductsAsync = async () => {

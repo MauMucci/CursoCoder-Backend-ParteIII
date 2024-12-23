@@ -1,5 +1,6 @@
 import express from 'express';
-import { productModel } from '../Mongo/Models/product.model.js';
+import { productModel } from '../Mongo/Models/product2.model.js';
+//import { productModel } from '../Mongo/Models/product.model.js';
 import passport from 'passport';
 
 
@@ -7,17 +8,17 @@ const viewsRouter = express.Router()
 
 
 viewsRouter.get('/home',passport.authenticate('jwt',{session:false}), async (req,res) => {
-     // const {page=1,limit=5} = req.query 
+     const {page=1,limit=5} = req.query 
 
-     // try {
-     //      const products = await productModel.paginate({},{limit,page})
+     try {
+          const products = await productModel.paginate({},{limit,page})
 
-     //      res.render('home',{products})
+          res.render('home',{products})
 
-     // } catch (error) {
-     //      res.status(500).json({error})
+     } catch (error) {
+          res.status(500).json({error})
           
-     // }
+     }
 })
 
 viewsRouter.get('/realTimeProducts',(req,res) => {
