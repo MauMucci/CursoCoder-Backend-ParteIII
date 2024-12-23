@@ -1,5 +1,5 @@
 import express from 'express';
-import { productModel } from '/app/src/Mongo/Models/product.model.js';
+import { productModel } from '../Mongo/Models/product.model.js';
 import passport from 'passport';
 
 
